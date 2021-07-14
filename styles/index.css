@@ -1,0 +1,75 @@
+html, body{
+	height: 100%;
+	margin: 0;
+}
+header{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding-top: 2%;
+	margin: auto;
+}
+h1{
+	font-weight: normal;
+	padding: 0;
+	margin: 0;
+}
+.buttons{
+	display: flex;
+	justify-content: space-between;
+	width: 12%;
+	align-items: end;
+}
+button{
+	height: 70%;
+}
+hr{
+	width: 68%;
+}
+.products-container{
+	display:flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: auto;
+}
+
+.products-container-inner{
+	min-height: 80%;
+}
+.products-container > div{ /* Product */
+	display: flex;
+	flex-direction: column;
+	width: 22.5%;
+	height: 110px;
+	padding: 20px 0 60px 0;
+	border: 2px solid;
+}
+.checkbox{
+	padding-left: 10px;
+}
+
+.product-info{
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+.products-container > div{
+	margin: 10px;
+}
+.row div span{
+	text-align: center;
+}
+
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
