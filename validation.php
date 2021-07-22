@@ -3,7 +3,7 @@ $valid = 1;
 $messages = [];
 
 function valid_sku($sku){
-	if (strlen($sku) == 0 || strlen($sku) > 9){
+	if (strlen($sku) < 9 || strlen($sku) > 9){
 		$valid = 0;
 		return "Enter a 9 character SKU";
 	}

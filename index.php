@@ -1,13 +1,17 @@
 <?php 
+	include("product.php");
 	include("db.php");
 	$db = new Database;
-	
+	$products = Product::return_all_products($db);
 	if (isset($_POST['delete'])){
-		foreach ($_POST as $id)
-		    $db->delete_product($id);
+		unset($_POST['delete']);
+		foreach($products as $p){
+			if (in_array($p->get_id(), $_POST)){
+				$p->delete();
+			}
+		}
+		$products = Product::return_all_products($db);
 	}
-	$products = $db->get_all();
-	$db->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +26,7 @@
 <body>
 	<header class="col-8">
 		<h1>Product List</h1>
-		<div class="buttons">
+			<div class="buttons">
 			<form action="add.php" method="get"> <button>Add</button> </form>
 			<form id="del" method="post">
 				<button name="delete" id="delete_btn" style="height:57%">Mass Delete</button>
@@ -33,24 +37,28 @@
 	<div class="products-container-inner">
 		<div class="products-container col-8">
 			<?php
-				foreach ($products as $type){
-					foreach($type as $p) { ?>
+				foreach ($products as $p){ ?>
 					<div>
 						<div class="checkbox">
-							<input name=<?=$p['id']?> form="del" value=<?=$p['id']?> type="checkbox" class="delete-checkbox" ?>
+							<input name=<?=$p->get_id()?> form="del" value=<?=$p->get_id()?> type="checkbox" class="delete-checkbox" ?>
 						</div>
 						<div class="product-info">
 							<?php 
-								unset($p['id']);
-								foreach ($p as $k => $v){ 
-									if ($k === array_key_last($p))					
-										echo "<span>" . htmlspecialchars($k) . ":" . htmlspecialchars($v) . "</span>";
-									else echo "<span>" . htmlspecialchars($v) . "</span>";
+								// storing the getters in $getters
+								$getters = get_class_methods($p);
+								$getters = array_filter($getters, function($x){
+									return (substr($x, 0, 3) == 'get' && $x != 'get_id' && $x != "get_type");
+								});
+								$getters[] = array_shift($getters);
+								// calling the getters one by one
+								foreach($getters as $get){ 
+									$field_name = "";
+									if (end($getters) == $get)
+										$field_name = ucfirst(substr($get, 4)) . ": "; 
+									echo "<span> $field_name" . $p->$get() . "</span>";
 								}
-						echo "
-						</div> 
-						</div>";
-					};
+						echo "</div>";
+					echo "</div>";
 				}
 			?>
 		</div>

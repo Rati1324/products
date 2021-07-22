@@ -11,11 +11,7 @@
 				'size' => "", 'weight' => "",  'height' => "",
 				'width' => "", 'length' => ""];
 	if (isset($_POST['submit'])){
-		include("validation.php");
-		if ($valid){	
-			$db->insert_product($_POST);
-			header("location: index.php");
-		}
+		include('insert.php');
 	}
 ?>
 <!DOCTYPE html>

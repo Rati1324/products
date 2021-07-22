@@ -12,22 +12,36 @@
             $this->password = $password;
             $this->dbname = $dbname;
             $this->conn = new mysqli($servername, $username, $password, $dbname);
-			
         }
+		public function execute($query)
+		{
+			$this->conn->query($query);	
+		}	
+		public function select($query, $col="")
+		{
+			$rows = [];
+			$res = $this->conn->query($query);
+			if ($res->num_rows > 0){
+				while ($row = $res->fetch_assoc()){
+					if (empty($col))
+						$rows[] = $row;
+					else
+						$rows[] = $row['name'];
+				}
+			}	
+			return $rows;
+		}
 		
 		public function get_prods($query)
 		{
 			$prods = [];
-			
 			$res = $this->conn->query($query);
-			
 			if ($res->num_rows > 0){
 				while ($row = $res->fetch_assoc()){
 					$prods[] = $row;
 				}
 			}
 			return $prods;
-
 		}
 		
 		public function get_all()
@@ -46,11 +60,11 @@
 			return $products;	
 		
 		}
-		public function insert_product($post_data){
-			$post_data['SKU'] = strtoupper($post_data['SKU']);
-			unset($post_data['submit']);
+		public function insert_product($values){
+			$values['SKU'] = strtoupper($values['SKU']);
+			unset($values['submit']);
 			$query = "INSERT INTO product VALUES(NULL";
-			foreach($post_data as $d){
+			foreach($values as $d){
 				$v = empty($d) ? ", NULL" : ", '$d'";
 				$query .= $v;
 			}
